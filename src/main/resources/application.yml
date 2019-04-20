@@ -1,1 +1,32 @@
+spring:
+
+  application:
+    name: @project.name@
+    version: @project.version@
+
+  datasource:
+    url: jdbc:mysql://192.168.2.54:23306/i-press?characterEncoding=utf-8&useSSL=false&autoReconnect=false&rewriteBatchedStatements=true&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      connection-timeout: 30000
+      auto-commit: true
+      max-lifetime: 1800000
+      pool-name: DatebookHikariCP
+      minimum-idle: 5
+      connection-test-query: SELECT 1
+      idle-timeout: 30000
+      maximum-pool-size: 15
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+server:
+  port: 8081
+  servlet:
+    context-path: /api
 
