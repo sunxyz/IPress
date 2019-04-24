@@ -18,11 +18,11 @@ import java.io.IOException;
  * @date 2019/04/24
  * We should use OncePerRequestFilter since we are doing a database call, there is no point in doing this more than once
  */
-public class JwtTokenFilter  extends OncePerRequestFilter {
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private JwtTokenProvider jwtTokenProvider;
 
-    public JwtTokenFilter(JwtTokenProvider jwtTokenProvider) {
+    public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 

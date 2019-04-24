@@ -44,15 +44,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests()
-                .antMatchers("/", "/home","/token/**").permitAll()
+                .antMatchers("/", "/home","/token/**","signin").permitAll()
                 .anyRequest().authenticated();
 
         // Apply JWT
-        http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
+        http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider, authenticationManager()));
     }
 
 
-//    @ConditionalOnMissingBean(UserDetailsService.class)
+    @ConditionalOnMissingBean(UserDetailsService.class)
     @Bean
     @Override
     public UserDetailsService userDetailsService() {
