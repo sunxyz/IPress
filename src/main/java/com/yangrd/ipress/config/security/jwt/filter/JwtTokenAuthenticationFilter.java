@@ -1,6 +1,8 @@
-package com.yangrd.ipress.config.security.jwt;
+package com.yangrd.ipress.config.security.jwt.filter;
 
+import com.yangrd.ipress.config.security.jwt.JwtTokenProvider;
 import com.yangrd.ipress.exception.CustomException;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -12,19 +14,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * JwtTokenFilter
+ * JwtTokenAuthenticationFilter
  *
  * @author yangrd
  * @date 2019/04/24
  * We should use OncePerRequestFilter since we are doing a database call, there is no point in doing this more than once
  */
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+@AllArgsConstructor
+public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
 
     private JwtTokenProvider jwtTokenProvider;
-
-    public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider) {
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {

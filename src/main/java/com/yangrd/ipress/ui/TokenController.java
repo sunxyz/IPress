@@ -2,6 +2,7 @@ package com.yangrd.ipress.ui;
 
 import com.yangrd.ipress.config.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 
 /**
  * TokenController
@@ -30,8 +32,8 @@ public class TokenController {
     }
 
     @GetMapping("/me")
-    public UserDetails whoami(HttpServletRequest request){
-        return userService.whoami(request);
+    public UserDetails whoami(Principal principal){
+        return (UserDetails)((UsernamePasswordAuthenticationToken)principal).getPrincipal();
     }
 
     @GetMapping("/refresh")

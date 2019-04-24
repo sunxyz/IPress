@@ -1,7 +1,7 @@
 package com.yangrd.ipress.config.security.jwt;
 
+import com.yangrd.ipress.config.security.jwt.filter.JwtTokenAuthenticationFilter;
 import lombok.AllArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.DefaultSecurityFilterChain;
@@ -18,13 +18,9 @@ public class JwtTokenFilterConfigurer extends SecurityConfigurerAdapter<DefaultS
 
     private JwtTokenProvider jwtTokenProvider;
 
-    private AuthenticationManager authenticationManager;
-
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        JwtLoginFilter jwtLoginFilter = new JwtLoginFilter("/signin", authenticationManager, jwtTokenProvider);
-        http.addFilterBefore(jwtLoginFilter, UsernamePasswordAuthenticationFilter.class);
-        JwtAuthenticationFilter customFilter = new JwtAuthenticationFilter(jwtTokenProvider);
+        JwtTokenAuthenticationFilter customFilter = new JwtTokenAuthenticationFilter(jwtTokenProvider);
         http.addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter.class);
     }
 

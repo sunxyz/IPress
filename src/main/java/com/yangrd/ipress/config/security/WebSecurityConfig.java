@@ -48,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated();
 
         // Apply JWT
-        http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider, authenticationManager()));
+        http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
     }
 
 
