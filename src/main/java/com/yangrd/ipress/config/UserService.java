@@ -9,7 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @AllArgsConstructor
 
-@Component
+@Service
 public class UserService {
 
     private JwtTokenProvider jwtTokenProvider;
@@ -40,7 +40,8 @@ public class UserService {
     }
 
     public UserDetails whoami(HttpServletRequest req) {
-        return userDetailsService.loadUserByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
+        String username = jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req));
+        return userDetailsService.loadUserByUsername(username);
     }
 
     public String refresh(String username) {

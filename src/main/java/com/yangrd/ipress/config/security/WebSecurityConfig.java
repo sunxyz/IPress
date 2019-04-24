@@ -3,8 +3,11 @@ package com.yangrd.ipress.config.security;
 import com.yangrd.ipress.config.security.jwt.JwtTokenFilterConfigurer;
 import com.yangrd.ipress.config.security.jwt.JwtTokenProvider;
 import lombok.AllArgsConstructor;
+import org.eclipse.jetty.client.api.Authentication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -41,13 +44,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests()
-                .antMatchers("/", "/home").permitAll()
+                .antMatchers("/", "/home","/token/**").permitAll()
                 .anyRequest().authenticated();
 
         // Apply JWT
         http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
     }
 
+
+//    @ConditionalOnMissingBean(UserDetailsService.class)
     @Bean
     @Override
     public UserDetailsService userDetailsService() {
@@ -59,5 +64,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         .build();
 
         return new InMemoryUserDetailsManager(user);
+    }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManager() throws Exception {
+        return super.authenticationManager();
     }
 }
