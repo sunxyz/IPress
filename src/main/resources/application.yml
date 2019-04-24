@@ -30,3 +30,8 @@ server:
   servlet:
     context-path: /api
 
+security:
+  jwt:
+    token:
+      secret-key: secret-key
+      expire-length: 36000
