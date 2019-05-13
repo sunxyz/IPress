@@ -1,4 +1,4 @@
-package com.yangrd.ipress.config;
+package com.yangrd.ipress.config.security.rest;
 
 import com.yangrd.ipress.config.security.jwt.JwtTokenProvider;
 import com.yangrd.ipress.exception.CustomException;

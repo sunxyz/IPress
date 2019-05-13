@@ -2,8 +2,7 @@ package com.yangrd.ipress.config.security;
 
 import com.yangrd.ipress.config.security.jwt.JwtTokenFilterConfigurer;
 import com.yangrd.ipress.config.security.jwt.JwtTokenProvider;
-import lombok.AllArgsConstructor;
-import org.eclipse.jetty.client.api.Authentication;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,13 +23,13 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
  * @author yangrd
  * @date 2019/04/20
  */
-@AllArgsConstructor
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
     @Override

@@ -1,6 +1,5 @@
-package com.yangrd.ipress.ui;
+package com.yangrd.ipress.config.security.rest;
 
-import com.yangrd.ipress.config.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
