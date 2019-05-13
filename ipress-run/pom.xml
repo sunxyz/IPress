@@ -6,7 +6,7 @@
         <groupId>com.yangrd</groupId>
         <artifactId>ipress</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath>../../IPress/pom.xml</relativePath> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.yangrd</groupId>
     <artifactId>ipress-run</artifactId>
@@ -22,6 +22,11 @@
         <dependency>
             <groupId>com.yangrd</groupId>
             <artifactId>ipress-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yangrd</groupId>
+            <artifactId>ipress-pocket</artifactId>
             <version>${project.version}</version>
         </dependency>
 

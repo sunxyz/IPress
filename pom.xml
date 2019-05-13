@@ -22,6 +22,7 @@
 
     <modules>
         <module>ipress-core</module>
+        <module>ipress-pocket</module>
         <module>ipress-run</module>
     </modules>
 
