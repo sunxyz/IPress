@@ -30,7 +30,7 @@ public class MenuFactory implements IPocketFactory<Menu, MenuCreatedCommand> {
                 type.ordinal() == command.getType()
         ).findFirst().orElse(null);
         return new Menu().
-                setId(IDGenerator.genId()).
+                setId(command.getId()).
                 setPocketId(command.getPocketId()).
                 setName(command.getName()).
                 setSort(command.getSort()).

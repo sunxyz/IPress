@@ -31,6 +31,7 @@ public class Menu {
 
     private Integer sort;
 
+    @Enumerated(EnumType.STRING)
     private MenuType type;
 
     @ManyToOne(fetch = FetchType.LAZY)

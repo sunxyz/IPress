@@ -12,11 +12,6 @@ import lombok.Data;
 public class EntryCreatedCommand {
 
     /**
-     * id
-     */
-    private String id;
-
-    /**
      * 标题
      */
     private String title;
@@ -30,4 +25,6 @@ public class EntryCreatedCommand {
      * markdown内容
      */
     private String mdContent;
+
+    private String parentMenuId;
 }

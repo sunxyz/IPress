@@ -15,4 +15,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class MenuApplicationService extends AbstractPocketApplicationService<Menu, MenuCreatedCommand, MenuFactory, MenuRepository> {
 
+    @Override
+    public Menu create(MenuCreatedCommand command) {
+        command.setType(0);
+        return super.create(command);
+    }
 }

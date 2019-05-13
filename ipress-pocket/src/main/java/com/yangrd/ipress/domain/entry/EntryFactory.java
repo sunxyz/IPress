@@ -1,6 +1,7 @@
 package com.yangrd.ipress.domain.entry;
 
 import com.yangrd.ipress.domain.IPocketFactory;
+import com.yangrd.ipress.infrastructure.IDGenerator;
 import com.yangrd.ipress.infrastructure.command.EntryCreatedCommand;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +17,7 @@ public class EntryFactory implements IPocketFactory<Entry, EntryCreatedCommand> 
     @Override
     public Entry created(EntryCreatedCommand command, String username) {
         return new Entry().
-                setId(command.getId()).
+                setId(IDGenerator.genId()).
                 setTitle(command.getTitle()).
                 setHtmlContent(command.getHtmlContent()).
                 setMdContent(command.getMdContent()).

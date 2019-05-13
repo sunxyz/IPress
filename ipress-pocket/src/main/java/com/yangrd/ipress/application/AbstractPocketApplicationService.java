@@ -23,10 +23,10 @@ public class AbstractPocketApplicationService<T, C, F extends IPocketFactory<T, 
     private D repository;
 
     @Transactional(rollbackFor = Exception.class)
-    public void create(C command) {
+    public T create(C command) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         T entity = factory.created(command, username);
-        repository.save(entity);
+        return repository.save(entity);
     }
 
     @Transactional(rollbackFor = Exception.class)

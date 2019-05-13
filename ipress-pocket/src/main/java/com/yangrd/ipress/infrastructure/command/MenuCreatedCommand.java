@@ -1,6 +1,7 @@
 package com.yangrd.ipress.infrastructure.command;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * MenuCreatedCommand
@@ -9,7 +10,10 @@ import lombok.Data;
  * @date 2019/05/13
  */
 @Data
+@Accessors(chain = true)
 public class MenuCreatedCommand {
+
+    private String id;
 
     private String pocketId;
 
