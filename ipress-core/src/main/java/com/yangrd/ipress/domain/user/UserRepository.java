@@ -12,5 +12,10 @@ import java.util.Optional;
  */
 public interface UserRepository extends JpaRepository<User,Long> {
 
+    /**
+     * 根据用户名查询用户
+     * @param username
+     * @return
+     */
     Optional<User> findUserByUsername(String username);
 }
