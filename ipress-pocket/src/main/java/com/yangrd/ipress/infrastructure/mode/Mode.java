@@ -2,6 +2,7 @@ package com.yangrd.ipress.infrastructure.mode;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.util.Objects;
 
@@ -16,14 +17,19 @@ import java.util.Objects;
 @Embeddable
 public class Mode {
 
+    @Column(name = "mod_group_name")
     private String groupName;
 
+    @Column(name = "mod_user_name")
     private String userName;
 
+    @Column(name = "mod_group")
     private Integer group;
 
+    @Column(name = "mod_user")
     private Integer user;
 
+    @Column(name = "mod_other")
     private Integer other;
 
     public boolean hasRead(Integer x){
