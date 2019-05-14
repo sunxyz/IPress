@@ -1,7 +1,6 @@
 package com.yangrd.ipress.domain.menu;
 
 import com.yangrd.ipress.domain.IPocketFactory;
-import com.yangrd.ipress.infrastructure.IDGenerator;
 import com.yangrd.ipress.infrastructure.command.MenuCreatedCommand;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -19,8 +18,6 @@ import java.util.stream.Stream;
 @Component
 public class MenuFactory implements IPocketFactory<Menu, MenuCreatedCommand> {
 
-    private MenuRepository repository;
-
     @Override
     public Menu created(MenuCreatedCommand command, String username) {
         if (-1 < command.getType() && command.getType() < Menu.MenuType.values().length) {
@@ -34,7 +31,7 @@ public class MenuFactory implements IPocketFactory<Menu, MenuCreatedCommand> {
                 setPocketId(command.getPocketId()).
                 setName(command.getName()).
                 setSort(command.getSort()).
-                setParent(repository.findById(command.getParentId()).orElse(null)).
+                setParentId(command.getParentId()).
                 setType(menuType).
                 setMode(getMode(username));
     }

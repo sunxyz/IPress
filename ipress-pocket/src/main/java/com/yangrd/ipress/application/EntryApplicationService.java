@@ -34,4 +34,17 @@ public class EntryApplicationService extends AbstractPocketApplicationService<En
         menuApplicationService.create(menuCommand);
         return entry;
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void update(String id, EntryCreatedCommand command) {
+        super.update(id, command);
+        MenuCreatedCommand menuCommand = new MenuCreatedCommand()
+                .setName(command.getTitle()).
+                        setParentId(command.getParentMenuId()).
+                        setSort(0).
+                        setType(1).
+                        setId(id);
+        menuApplicationService.update(id, menuCommand);
+    }
 }

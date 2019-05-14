@@ -17,10 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class AbstractPocketApplicationService<T, C, F extends IPocketFactory<T, C>, D extends JpaRepository<T, String>> {
 
     @Autowired
-    private F factory;
+     F factory;
 
     @Autowired
-    private D repository;
+     D repository;
 
     @Transactional(rollbackFor = Exception.class)
     public T create(C command) {

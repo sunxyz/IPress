@@ -34,8 +34,7 @@ public class Menu {
     @Enumerated(EnumType.STRING)
     private MenuType type;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Menu parent;
+    private String parentId;
 
     /**
      * 权限模型　chmod linux
