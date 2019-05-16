@@ -188,9 +188,18 @@
         </Layout>
 
        <Drawer title="新建目录" placement="left" :closable="false" v-model="folderModel" width="33%">
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
+           <Form :model="formItem" :label-width="80">
+               <FormItem label="目录名">
+                   <Input v-model="formItem.input" placeholder="Enter something..."></Input>
+               </FormItem>
+               <FormItem label="上级目录">
+                   <Select v-model="formItem.select">
+                       <Option value="beijing">New York</Option>
+                       <Option value="shanghai">London</Option>
+                       <Option value="shenzhen">Sydney</Option>
+                   </Select>
+               </FormItem>
+           </Form>
             <div class="demo-drawer-footer">
                 <Button style="margin-right: 8px" @click="folderModel = false">Cancel</Button>
                 <Button type="primary" @click="folderModel = false">Submit</Button>
@@ -246,7 +255,18 @@
                             label: '中华门'
                         }]
                     }]
-                }]
+                }],
+                formItem: {
+                    input: '',
+                    select: '',
+                    radio: 'male',
+                    checkbox: [],
+                    switch: true,
+                    date: '',
+                    time: '',
+                    slider: [20, 50],
+                    textarea: ''
+                }
             }
         },
         methods: {
