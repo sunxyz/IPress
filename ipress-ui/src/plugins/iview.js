@@ -9,7 +9,7 @@ router.beforeEach((to, from, next) => {
     next();
 });
 
-router.afterEach(route => {
+router.afterEach(() => {
     iView.LoadingBar.finish();
 });
 

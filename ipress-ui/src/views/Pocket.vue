@@ -60,6 +60,12 @@
     .ivu-menu {
         position: static;
     }
+
+    .op-icon.dropdown-wrapper.dropdown[data-v-548e2160] {
+        position: relative;
+        border: 1px solid #666;
+        background: #fff;
+    }
 </style>
 <template>
     <div class="layout">
@@ -181,7 +187,7 @@
             </Layout>
         </Layout>
 
-        <Drawer title="新建目录" placement="left" :closable="false" v-model="folderModel" width="33%">
+       <Drawer title="新建目录" placement="left" :closable="false" v-model="folderModel" width="33%">
             <p>Some contents...</p>
             <p>Some contents...</p>
             <p>Some contents...</p>
@@ -190,26 +196,58 @@
                 <Button type="primary" @click="folderModel = false">Submit</Button>
             </div>
         </Drawer>
-        <Drawer title="新建页面" placement="right-end" :closable="false" v-model="pageModel" width="100%">
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-            <div class="demo-drawer-footer">
-                <Button style="margin-right: 8px" @click="pageModel = false">Cancel</Button>
-                <Button type="primary" @click="pageModel = false">Submit</Button>
-            </div>
-        </Drawer>
+        <Drawer title="新建页面" placement="right" :closable="false" v-model="pageModel" width="100%">
+           <span style="margin-right: 10px">标题</span> <Input placeholder="标题"style="width: 200px"/>
+            <span style="margin-right: 10px;margin-left: 20px">目录</span><Cascader :data="data" v-model="value1" style="width: 200px;display: inline-block"></Cascader>
+            <br> <br>
+<!--            <vue-simple-markdown :source="value"></vue-simple-markdown>-->
+<!--            <mavon-editor v-model="value"/>-->
+            <markdown-editor v-model="value"　:configs="configs" ref="markdownEditor"></markdown-editor>
+           <div class="demo-drawer-footer">
+               <Button style="margin-right: 8px" @click="pageModel = false">Cancel</Button>
+               <Button type="primary" @click="pageModel = false">Submit</Button>
+           </div>
+       </Drawer>
     </div>
 </template>
 <script>
+    import VueSimplemde from 'vue-simplemde'
     export default {
         data() {
             return {
                 activeMenuName: '1',
                 isCollapsed: false,
                 folderModel: false,
-                pageModel: false
-            };
+                pageModel: false,
+                value: '# hello \n' +
+                    '> 你好',
+                configs: {},
+                value1:[],
+                data:[{
+                    value: 'zhejiang',
+                    label: '浙江',
+                    children: [{
+                        value: 'hangzhou',
+                        label: '杭州',
+                        children: [{
+                            value: 'xihu',
+                            label: '西湖'
+                        }]
+                    }]
+                }, {
+                    value: 'jiangsu',
+                    label: '江苏',
+                    disabled: true,
+                    children: [{
+                        value: 'nanjing',
+                        label: '南京',
+                        children: [{
+                            value: 'zhonghuamen',
+                            label: '中华门'
+                        }]
+                    }]
+                }]
+            }
         },
         methods: {
             openFolderDrawer() {
