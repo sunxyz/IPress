@@ -4,22 +4,25 @@
             :showPageDrawer.sync="showPageDrawer"
             :showFolderDrawer2.sync="showFolderDrawer2"
     >
-        <div slot="page">
+        <div slot="page"  style="padding: 10px">
             <span style="margin-right: 10px">标题</span> <Input placeholder="标题" style="width: 200px"/>
-            <!--            <span style="margin-right: 10px;margin-left: 20px">目录</span><Cascader :data="data" v-model="value1" style="width: 200px;display: inline-block"></Cascader>-->
-            <br> <br>
+                        <span style="margin-right: 10px;margin-left: 20px">目录</span><Cascader :data="menus" v-model="selectMenus" style="width: 200px;display: inline-block"></Cascader>
+            <br> <br><br>
             <!--            <vue-simple-markdown :source="value"></vue-simple-markdown>-->
-            <!--            <mavon-editor v-model="value"/>-->
-            <markdown-editor v-model="value" 　 ref="markdownEditor"></markdown-editor>
+<!--                        <mavon-editor v-model="value"/>-->
+            <markdown-editor v-model="value" ref="markdownEditor" ></markdown-editor>
             <div class="demo-drawer-footer">
                 <Button style="margin-right: 8px"　@click="showPageDrawer=false">取消</Button>
                 <Button type="primary" @click="showPageDrawer=false">保存</Button>
             </div>
         </div>
-        <div slot="folder-manager">
+        <div slot="folder-manager" style="padding: 10px">
             <Button shape="circle" @click="showFolderDrawer2=true">添加目录</Button>
             <br><br>
             <Table stripe :columns="columns" :data="data"></Table>
+        </div>
+        <div style="height: 1000px; width: 900px; margin: auto">
+            hhhhhhhhhhhhhhhhhhh
         </div>
     </Main>
 </template>
@@ -38,6 +41,31 @@
                 showFolderDrawer: false,
                 showFolderDrawer2: false,
                 showPageDrawer: false,
+                selectMenus:[],
+                menus:[{
+                    value: 'zhejiang',
+                    label: '浙江',
+                    children: [{
+                        value: 'hangzhou',
+                        label: '杭州',
+                        children: [{
+                            value: 'xihu',
+                            label: '西湖'
+                        }]
+                    }]
+                }, {
+                    value: 'jiangsu',
+                    label: '江苏',
+                    disabled: true,
+                    children: [{
+                        value: 'nanjing',
+                        label: '南京',
+                        children: [{
+                            value: 'zhonghuamen',
+                            label: '中华门'
+                        }]
+                    }]
+                }],
                 columns: [
                     {
                         title: '目录',
@@ -112,11 +140,7 @@
 <style scoped>
     .demo-drawer-footer {
         width: 100%;
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        border-top: 1px solid #e8e8e8;
-        padding: 10px 16px;
+        padding: 30px 16px;
         text-align: right;
         background: #fff;
     }
