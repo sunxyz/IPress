@@ -1,9 +1,12 @@
 package com.yangrd.ipress.application.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
@@ -25,10 +28,21 @@ public class MenuTree implements Comparable<MenuTree>{
     private Set<MenuTree> children = new TreeSet<>();
 
     @JsonIgnore
+    private Integer type;
+
+    @JsonIgnore
     private Integer sort;
 
     @JsonIgnore
     private String parentId;
+
+    @JsonIgnore
+    private Date createdTime;
+
+
+    public Set<MenuTree> getChildren() {
+        return type.intValue()==0?children:null;
+    }
 
     public void addChildren(MenuTree children){
        this.children.add(children);
@@ -44,6 +58,9 @@ public class MenuTree implements Comparable<MenuTree>{
 
     @Override
     public int compareTo(MenuTree o) {
+        if(this.sort.equals(o.sort)){
+            return this.createdTime.compareTo(o.createdTime);
+        }
         return this.sort.compareTo(o.sort);
     }
 }

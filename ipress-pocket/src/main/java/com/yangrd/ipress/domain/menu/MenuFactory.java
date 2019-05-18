@@ -20,7 +20,7 @@ public class MenuFactory implements IPocketFactory<Menu, MenuCreatedCommand> {
 
     @Override
     public Menu created(MenuCreatedCommand command, String username) {
-        if (-1 < command.getType() && command.getType() < Menu.MenuType.values().length) {
+        if (command.getType() < 0 && command.getType() >= Menu.MenuType.values().length) {
             throw new IndexOutOfBoundsException("");
         }
         Menu.MenuType menuType = Stream.of(Menu.MenuType.values()).filter(type ->

@@ -9,12 +9,11 @@
             <slot name="folder-manager"></slot>
         </Drawer>
         <Drawer 　
-                placement="left"  　
                 :closable="false"　
                 width="50%"
                 :value="showFolderDrawer2"
                 @on-close="closeFolderDrawer2">
-            <slot name="folder-from">
+            <slot name="folder-form">
 
             </slot>
         </Drawer>

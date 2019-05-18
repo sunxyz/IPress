@@ -3,46 +3,74 @@
             :showFolderDrawer.sync="showFolderDrawer"
             :showPageDrawer.sync="showPageDrawer"
             :showFolderDrawer2.sync="showFolderDrawer2"
+            :menuList="menuList"
     >
-        <div slot="page"  style="padding: 10px">
+        <div slot="page" style="padding: 10px">
             <span style="margin-right: 10px">标题</span> <Input placeholder="标题" style="width: 200px"/>
-                        <span style="margin-right: 10px;margin-left: 20px">目录</span><Cascader :data="menus" v-model="selectMenus" style="width: 200px;display: inline-block"></Cascader>
+            <span style="margin-right: 10px;margin-left: 20px">目录</span>
+            <Cascader :data="folders" v-model="selectFolder" style="width: 200px;display: inline-block"></Cascader>
             <br> <br><br>
             <!--            <vue-simple-markdown :source="value"></vue-simple-markdown>-->
-<!--                        <mavon-editor v-model="value"/>-->
-            <markdown-editor v-model="value" ref="markdownEditor" ></markdown-editor>
+            <!--                        <mavon-editor v-model="value"/>-->
+            <markdown-editor v-model="value" ref="markdownEditor"></markdown-editor>
             <div class="demo-drawer-footer">
-                <Button style="margin-right: 8px"　@click="showPageDrawer=false">取消</Button>
+                <Button style="margin-right: 8px" 　@click="showPageDrawer=false">取消</Button>
                 <Button type="primary" @click="showPageDrawer=false">保存</Button>
             </div>
         </div>
         <div slot="folder-manager" style="padding: 10px">
-            <Button shape="circle" @click="showFolderDrawer2=true">添加目录</Button>
+            <Button shape="circle" @click="editFolder()">添加目录</Button>
             <br><br>
-            <Table stripe :columns="columns" :data="data"></Table>
+            <Table stripe :columns="folderColumns" :data="folderData"/>
+        </div>
+        <div slot="folder-form">
+            <Form :model="folderItem" :label-width="80">
+                <FormItem label="目录名">
+                    <Input v-model="folderItem.name" placeholder="请输入目录名..." style="width:200px"/>
+                </FormItem>
+                <FormItem label="上级目录">
+                    <Select v-model="folderItem.parentId" style="width:200px">
+                        <Option v-for="item in folderData" :value="item.id" :key="item.id">{{ item.levelName }}</Option>
+                    </Select>
+                </FormItem>
+                <FormItem label="序号">
+                    <InputNumber v-model="folderItem.sort" placeholder="请输入序号..."/>
+                </FormItem>
+            </Form>
+            <div class="demo-drawer-footer">
+                <Button style="margin-right: 8px" 　@click="showFolderDrawer2=false">取消</Button>
+                <Button type="primary" @click="submitFolder">保存</Button>
+            </div>
         </div>
         <div style="height: 1000px; width: 900px; margin: auto">
             hhhhhhhhhhhhhhhhhhh
+            ---- {{id}}
         </div>
     </Main>
 </template>
 
 <script>
     import Main from '../components/layout'
-
+    import {listMenuTree} from '../api/pocketApi'
+    import folderMixin from './pocket/folderMixin'
     export default {
         name: "Test",
+        mixins:[folderMixin],
+        props: {
+            id: {
+                type: String
+            }
+        },
         components: {
             Main
         },
         data() {
             return {
                 value: '',
-                showFolderDrawer: false,
-                showFolderDrawer2: false,
                 showPageDrawer: false,
-                selectMenus:[],
-                menus:[{
+                menuList: [],
+                selectFolder: [],
+                folders: [{
                     value: 'zhejiang',
                     label: '浙江',
                     children: [{
@@ -65,74 +93,19 @@
                             label: '中华门'
                         }]
                     }]
-                }],
-                columns: [
-                    {
-                        title: '目录',
-                        key: 'name'
-                    },
-                    {
-                        title: '添加时间',
-                        key: 'age'
-                    },
-                    {
-                        title: '序号',
-                        key: 'address'
-                    },
-                    {
-                        title: '操作',
-                        fixed: 'right',
-                        width: 120,
-                        render:(h,params)=>{
-                            return h('div', [
-                                h('Button', {
-                                    props: {
-                                        type: 'text',
-                                        size: 'small'
-                                    },
-                                    on:{
-                                        click:()=>{
-                                            this.folderModel2=true
-                                        }
-                                    }
-                                }, '编辑'),
-                                h('Button', {
-                                    props: {
-                                        type: 'text',
-                                        size: 'small'
-                                    }
-                                }, '删除')
-                            ]);
-                        }
-                    }
-                ],
-                data: [
-                    {
-                        name: 'John Brown',
-                        age: 18,
-                        address: 'New York No. 1 Lake Park',
-                        date: '2016-10-03'
-                    },
-                    {
-                        name: 'Jim Green',
-                        age: 24,
-                        address: 'London No. 1 Lake Park',
-                        date: '2016-10-01'
-                    },
-                    {
-                        name: 'Joe Black',
-                        age: 30,
-                        address: 'Sydney No. 1 Lake Park',
-                        date: '2016-10-02'
-                    },
-                    {
-                        name: 'Jon Snow',
-                        age: 26,
-                        address: 'Ottawa No. 2 Lake Park',
-                        date: '2016-10-04'
-                    }
-                ],
+                }]
             }
+        },
+        mounted(){
+            listMenuTree({id: this.id}).then(d => {
+                this.menuList = d.data
+            })
+        },
+        beforeRouteUpdate(to, from, next) {
+            listMenuTree({id: this.id}).then(d => {
+                this.menuList = d.data
+            })
+            next()
         }
     }
 </script>
@@ -141,7 +114,7 @@
     .demo-drawer-footer {
         width: 100%;
         padding: 30px 16px;
-        text-align: right;
+        text-align: left;
         background: #fff;
     }
 </style>

@@ -4,8 +4,11 @@ import com.yangrd.ipress.infrastructure.mode.Mode;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Menu
@@ -19,6 +22,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "p_menu")
+@EntityListeners(AuditingEntityListener.class)
 public class Menu {
 
     @Id
@@ -36,16 +40,20 @@ public class Menu {
 
     private String parentId;
 
+    @CreatedDate
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdTime;
+
     /**
      * 权限模型　chmod linux
      */
     private Mode mode;
 
-    enum MenuType{
+    public enum MenuType{
         /**
          * 菜单
          */
-        MENU,
+        FOLDER,
         /**
          * 文件
          */

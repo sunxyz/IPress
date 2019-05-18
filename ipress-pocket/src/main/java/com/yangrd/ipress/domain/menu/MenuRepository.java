@@ -1,6 +1,7 @@
 package com.yangrd.ipress.domain.menu;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 /**
  * MenuRepository
@@ -8,5 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author yangrd
  * @date 2019/05/13
  */
-public interface MenuRepository extends JpaRepository<Menu,String> {
+public interface MenuRepository extends JpaRepository<Menu,String>, JpaSpecificationExecutor<Menu> {
 }

@@ -39,8 +39,8 @@
                             <div slot="folder-manager">
                                 <slot name="folder-manager"></slot>
                             </div>
-                            <div slot="folder-from">
-                                <slot name="folder-from"></slot>
+                            <div slot="folder-form">
+                                <slot name="folder-form"></slot>
                             </div>
                             <div slot="page">
                                 <slot name="page"></slot>

@@ -43,7 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests()
-                .antMatchers("/", "/home","/token/**","signin").permitAll()
+                .antMatchers("/**", "/home","/token/**","signin").permitAll()
                 .anyRequest().authenticated();
 
         // Apply JWT
