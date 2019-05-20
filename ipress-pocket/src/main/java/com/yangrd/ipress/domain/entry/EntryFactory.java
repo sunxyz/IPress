@@ -17,6 +17,7 @@ public class EntryFactory implements IPocketFactory<Entry, EntryCreatedCommand> 
     @Override
     public Entry created(EntryCreatedCommand command, String username) {
         return new Entry().
+                setParentMenuId(command.getParentMenuId()).
                 setId(IDGenerator.genId()).
                 setTitle(command.getTitle()).
                 setHtmlContent(command.getHtmlContent()).

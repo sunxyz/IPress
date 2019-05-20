@@ -1,122 +1,101 @@
 <template>
     <div>
-        <div v-show="!collapsed">
-            <div class="side-menu-ctl" >
-                <Input placeholder="输入关键字后按回车进行搜索"/>
-                <div style="margin-top:15px;display: flex;justify-content: space-between">
-                    <div>
-                        <Tooltip content="主页" placement="left">
-                            <Button shape="circle" icon="ios-home-outline" style="margin: 5px 0px"
-                                    @click="$router.push({name:'home'})"></Button>
-                        </Tooltip>
-                    </div>
-                    <div>
-                        <Tooltip content="新建/管理目录" placement="left">
-                            <Button shape="circle" type="primary" icon="ios-folder-outline"
-                                    style="margin: 5px 8px" @click="openFolderDrawer"></Button>
-                        </Tooltip>
-                        <Tooltip content="新建页面" placement="right">
-                            <Button shape="circle" type="primary" icon="ios-add" style="margin: 5px  0 5px 8px"
-                                    @click="openPageDrawer"></Button>
-                        </Tooltip>
-                    </div>
+        <template v-if="collapsed">
+            <div class="side-ctl-wrapper">
+                <h2 class="logo" @click="$router.push({name:'home'})">IPress</h2>
+                <div class="ctrl-group">
+                    <ul>
+                        <li>
+                            <Tooltip content="新建页面" placement="right">
+                                <Button shape="circle" type="primary" icon="ios-add" @click="clickEntry" ></Button>
+                            </Tooltip>
+
+                        </li>
+                        <li>
+                            <Tooltip content="新建/管理目录" placement="right">
+                                <Button shape="circle" type="primary" icon="ios-folder-outline" @click="clickFolder"
+                                ></Button>
+                            </Tooltip>
+                        </li>
+                    </ul>
+
+
                 </div>
-
             </div>
-            <Menu width="auto" :class="menuitemClasses">
-                <MainSideMenu :menus="menuList"></MainSideMenu>
-            </Menu>
-        </div>
-        <div v-show="collapsed" style="text-align: center;padding: 5px">
-            <h2 style="cursor: pointer; margin-top: 10px;" @click="$router.push({name:'home'})">IPress</h2>
-            <div class="ctrl">
-                <ul>
-                    <li>
-                        <Tooltip content="新建页面" placement="right">
-                            <Button shape="circle" type="primary" icon="ios-add" @click="openPageDrawer"></Button>
-                        </Tooltip>
-
-                    </li>
-                    <li>
-                        <Tooltip content="新建/管理目录" placement="right">
-                            <Button shape="circle" type="primary" icon="ios-folder-outline"
-                                    @click="openFolderDrawer"></Button>
-                        </Tooltip>
-                    </li>
-                </ul>
-
-                <Dropdown placement="right-start" ref="dropdown" v-for="item in menuList">
+            <div class="side-menu-wrapper">
+                <Dropdown placement="right-start"  v-for="item in menus"　@on-click="selectMenu">
+                    <DropdownItem>
                     <Icon type="ios-folder-outline" size="26"
-                          style="cursor: pointer; margin-right: 30px"></Icon>
+                          style="cursor: pointer; margin:0 10px"></Icon>
+                    </DropdownItem>
 
-                    <DropdownMenu slot="list">
+                    <DropdownMenu slot="list" v-if="item.children.length">
                         <template v-for="obj in item.children">
-                            <MainSideDropdown v-if="obj.children" :menu="obj"></MainSideDropdown>
-                            <DropdownItem v-else　>
+                            <template v-if="obj.children">
+                                <MainSideDropdown v-if="obj.children.length"  :menu="obj"></MainSideDropdown>
+                            </template>
+
+                            <DropdownItem v-else :name="obj.id">
                                 <div>
-                                    <Icon type="ios-document-outline" />　{{item.name}}
+                                    <Icon type="ios-document-outline" />　{{obj.name}}
                                 </div>
                             </DropdownItem>
                         </template>
                     </DropdownMenu>
                 </Dropdown>
             </div>
-        </div>
+        </template>
+        <template v-else>
+            <div class="side-ctl-wrapper">
+                <h2 class="logo" @click="$router.push({name:'home'})">IPress</h2>
+                <div class="side-ctrl-group">
+                    <Input placeholder="输入关键字后按回车进行搜索"/>
+                    <div style="margin-top:15px;display: flex;justify-content: space-between">
+                        <div>
+                            <Tooltip content="主页" placement="left">
+                                <Button shape="circle" icon="ios-home-outline" style="margin: 5px 0px"
+                                        @click="$router.push({name:'home'})"></Button>
+                            </Tooltip>
+                        </div>
+                        <div>
+                            <Tooltip content="新建/管理目录" placement="left">
+                                <Button shape="circle" type="primary" icon="ios-folder-outline"
+                                        style="margin: 5px 8px" @click="clickFolder"></Button>
+                            </Tooltip>
+                            <Tooltip content="新建页面" placement="right">
+                                <Button shape="circle" type="primary" icon="ios-add" style="margin: 5px  0 5px 8px"  @click="clickEntry"
+                                ></Button>
+                            </Tooltip>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <Menu class="side-menu-wrapper" width="auto" :class="menuitemClasses"  @on-select="selectMenu">
+                <MainSideSubmenu :menus="menus"></MainSideSubmenu>
+            </Menu>
+        </template>
     </div>
 </template>
 
 <script>
-    import MainSideMenu from './MainSideMenu'
+    import MainSideSubmenu from './MainSideSubmenu'
     import MainSideDropdown from './MainSideDropdown'
+
     export default {
         name: "MainSide",
         components:{
-            MainSideMenu,
+            MainSideSubmenu,
             MainSideDropdown
         },
         props: {
+            menus:{
+                type:Array
+            },
             collapsed: {
-                default: true,
-                type: Boolean
-            },
-            menuList: {
-                type: Array,
-                default () {
-                    return [
-                        {
-                            id:'1',
-                            name:'1',
-                            children:[
-                                {
-                                    id:'1-1',
-                                    name:'1-1'
-                                },
-                                {
-                                    id:'1-2',
-                                    name:'1-2'
-                                },
-                                {
-                                    id:'1-3',
-                                    name:'1-3',
-                                    children:[
-                                        {
-                                            id:'1-3-1',
-                                            name:'1-3-1',
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                }
-            },
-            showFolderDrawer:{
-                default: false,
-                type:Boolean
-            },
-            showPageDrawer:{
-                default: false,
-                type:Boolean
+                type: Boolean,
+                default: false
             }
         },
         computed: {
@@ -128,30 +107,44 @@
             }
         },
         methods:{
-            openFolderDrawer(){
-                this.$emit('update:showFolderDrawer', true)
+            selectMenu(id){
+                if(id){
+                    this.$emit('on-select',id)
+                }
             },
-            openPageDrawer(){
-                this.$emit('update:showPageDrawer', true)
+            clickFolder(){
+                this.$emit('on-click-folder')
+            },
+            clickEntry(){
+                this.$emit('on-click-entry')
             }
+
         }
     }
 </script>
+
 <style scoped lang="less">
-    .ctrl>ul{
-        list-style: none;
-        text-align: center;
-        &>li{
-            margin: 20px ;
+    .logo {
+        cursor: pointer;
+    }
+
+    .ctrl-group {
+        ul li {
+            padding-top: 15px;
+
+            &:last-child {
+                padding-bottom: 10px;
+            }
         }
     }
-    .ctrl>.ivu-dropdown{
-        margin: 10px 20px;
-        text-align: center;
 
+    .side-ctrl-group {
+        padding: 20px;
     }
-    .side-menu-ctl{
-        margin: 20px;
-        box-sizing: border-box
+
+    .side-ctl-wrapper {
+        text-align: center;
+        padding-top: 15px;
     }
+
 </style>

@@ -47,4 +47,10 @@ public class EntryApplicationService extends AbstractPocketApplicationService<En
                         setId(id);
         menuApplicationService.update(id, menuCommand);
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void delete(String id){
+        repository.deleteById(id);
+        menuApplicationService.delete(id);
+    }
 }

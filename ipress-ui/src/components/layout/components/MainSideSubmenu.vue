@@ -1,9 +1,9 @@
 <template>
     <div>
-        <template  v-for="item in menus" >
+        <template v-for="item in menus">
             <template v-if="item.children">
                 <Submenu :name="item.id" :key="item.id">
-                    <template slot="title" >
+                    <template slot="title">
                         <Icon type="ios-folder-outline"/>
                         {{item.name}}
                     </template>
@@ -11,8 +11,8 @@
                 </Submenu>
             </template>
             <template v-else>
-                <MenuItem :name="item.id" >
-                    <Icon type="ios-document-outline" />
+                <MenuItem :name="item.id" 　>
+                    <Icon type="ios-document-outline"/>
                     {{item.name}}
                 </MenuItem>
             </template>
@@ -23,9 +23,9 @@
 
 <script>
     export default {
-        name:'MainSideMenu',
-        props:{
-            menus:{
+        name: 'MainSideMenu',
+        props: {
+            menus: {
                 type:Array
             }
         }

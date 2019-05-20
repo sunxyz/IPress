@@ -8,6 +8,7 @@ import com.yangrd.ipress.infrastructure.command.MenuCreatedCommand;
 import lombok.AllArgsConstructor;
 import org.hibernate.mapping.IdGenerator;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.*;
@@ -49,6 +50,11 @@ public class MenuController {
     @GetMapping("/folder")
     public List<FolderFlat> listFolderFlat() {
         return applicationService.listFolderFlat();
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable String id){
+        applicationService.delete(id);
     }
 
 

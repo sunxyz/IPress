@@ -1,4 +1,4 @@
-import {listFolderFlat, saveFolder, updateFolder} from '../../api/pocketApi'
+import {listFolderFlat, saveFolder, updateFolder ,deleteEntry} from '../../api/pocketApi'
 
 export default {
     data () {
@@ -69,6 +69,11 @@ export default {
                 sort:0
             },item)
             this.showFolderDrawer2=true
+        },
+        deleteFolder(id){
+            deleteEntry(id).then(()=>{
+                this.loadFolderData()
+            })
         },
         submitFolder(){
             if(this.folderId){

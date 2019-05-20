@@ -9,7 +9,7 @@
                   v-for="pocket in pocketArray" 　
                   :key="pocket.id"　
                   class="pocket-item"
-                  @click="$router.push({name:'pockets',params:{id:pocket.id}})"
+                  @click="$router.push({name:'pocket',params:{id:pocket.id}})"
                   :style="{background: 'url('+pocket.bg+')'}"
                   >
             <div class="setting">

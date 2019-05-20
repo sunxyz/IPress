@@ -10,6 +10,7 @@ import com.yangrd.ipress.infrastructure.IDGenerator;
 import com.yangrd.ipress.infrastructure.command.MenuCreatedCommand;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.function.Function;
@@ -40,6 +41,11 @@ public class MenuApplicationService extends AbstractPocketApplicationService<Men
         return list;
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    public void delete(String id){
+        repository.deleteById(id);
+    }
+
     private Set<MenuTree> listFolderTree() {
         return buildMenuTree(repository.findAll(MenuSpecification.toSpec(Menu.MenuType.FOLDER)));
     }
@@ -64,7 +70,7 @@ public class MenuApplicationService extends AbstractPocketApplicationService<Men
     }
 
 
-    public Set<MenuTree> buildMenuTree(List<Menu> menus) {
+    private Set<MenuTree> buildMenuTree(List<Menu> menus) {
         Set<MenuTree> menuTrees = mapSet(menus);
         Map<String, MenuTree> menuTreeMap = menuTrees.stream().collect(Collectors.toMap(MenuTree::getId, Function.identity()));
         menuTrees.forEach(menuTree -> {

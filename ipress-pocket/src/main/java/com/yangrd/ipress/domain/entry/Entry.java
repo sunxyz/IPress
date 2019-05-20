@@ -30,6 +30,12 @@ public class Entry {
     @Column(length = 100)
     private String id;
 
+
+    /**
+     * 文件夹
+     */
+    private String parentMenuId;
+
     /**
      * 标题
      */

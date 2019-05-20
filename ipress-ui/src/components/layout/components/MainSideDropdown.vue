@@ -1,17 +1,17 @@
 <template>
-    <Dropdown placement="right-start">
-        <DropdownItem>
+    <Dropdown placement="right-start" >
+        <DropdownItem >
             <Icon type="ios-folder-outline"/>
             {{menu.name}}
             <Icon type="ios-arrow-forward"></Icon>
         </DropdownItem>
-        <DropdownMenu slot="list">
+        <DropdownMenu slot="list" v-if="menu.children.length">
             <template v-for="item in menu.children">
-                <MainSideDropdown v-if="item.children" :menu="item"></MainSideDropdown>
-                <DropdownItem v-else>　
-                  <div>
-                      <Icon type="ios-document-outline" />　{{item.name}}
-                  </div>
+                <template v-if="item.children">
+                    <MainSideDropdown 　:menu="item"></MainSideDropdown>
+                </template>
+                <DropdownItem 　:name="item.id" v-else>　
+                        <Icon type="ios-document-outline" />　{{item.name}}
 
                 </DropdownItem>
             </template>

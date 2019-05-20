@@ -41,4 +41,9 @@ public class EntryController {
         return entry;
     }
 
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable String id){
+        applicationService.delete(id);
+    }
+
 }
