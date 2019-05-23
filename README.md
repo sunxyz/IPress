@@ -1,5 +1,23 @@
 # IPress
 
-> 书写你的书写
+> 博客与知识管理工具　书写
 
-look showdoc.cc 
+> Vue vueRouter Spring Boot
+ 
+**demo**
+ 
+[ipress](https://suxyz.gitee.com)
+
+
+**已完成**
+
+pocket 管理
+
+folder 管理
+
+entry 管理
+
+
+**未完成**
+
+用户登录
