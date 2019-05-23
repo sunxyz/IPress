@@ -48,7 +48,8 @@ public class EntryApplicationService extends AbstractModePermissionService<Entry
         MenuCreatedCommand menuCommand = new MenuCreatedCommand()
                 .setName(command.getTitle()).
                         setParentId(command.getParentMenuId()).
-                        setSort(0).
+                        setPocketId(command.getPocketId()).
+                        setSort(command.getSort()).
                         setType(1).
                         setId(id);
         menuApplicationService.updateById(id, menuCommand);
