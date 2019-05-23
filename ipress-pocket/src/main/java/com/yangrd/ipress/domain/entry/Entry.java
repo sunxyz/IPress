@@ -51,7 +51,5 @@ public class Entry extends AbstractModeEntity<Entry> {
     @Lob
     private String mdContent;
 
-
-
-
+    private Integer sort;
 }

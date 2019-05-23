@@ -19,6 +19,7 @@ public class EntryFactory implements IPocketFactory<Entry, EntryCreatedCommand> 
         return new Entry().
                 setParentMenuId(command.getParentMenuId()).
                 setId(IDGenerator.genId()).
+                setSort(command.getSort()).
                 setTitle(command.getTitle()).
                 setHtmlContent(command.getHtmlContent()).
                 setMdContent(command.getMdContent()).
