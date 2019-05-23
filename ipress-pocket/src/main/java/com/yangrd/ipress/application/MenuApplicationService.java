@@ -2,6 +2,7 @@ package com.yangrd.ipress.application;
 
 import com.yangrd.ipress.application.dto.FolderFlat;
 import com.yangrd.ipress.application.dto.MenuTree;
+import com.yangrd.ipress.domain.entry.EntryRepository;
 import com.yangrd.ipress.domain.menu.Menu;
 import com.yangrd.ipress.domain.menu.MenuFactory;
 import com.yangrd.ipress.domain.menu.MenuRepository;
@@ -9,7 +10,9 @@ import com.yangrd.ipress.domain.menu.MenuSpecification;
 import com.yangrd.ipress.infrastructure.SecurityUtils;
 import com.yangrd.ipress.infrastructure.command.MenuCreatedCommand;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.function.Function;
@@ -23,13 +26,17 @@ import java.util.stream.Collectors;
  */
 @Service
 public class MenuApplicationService extends AbstractModePermissionService<Menu, MenuCreatedCommand, MenuFactory, MenuRepository> {
+
+    @Autowired
+    private EntryRepository entryRepository;
+
     /**
      * 获取当前用户菜单树
      *
      * @return
      */
     public Set<MenuTree> getCurrentUserMenuTrees(String pocketId) {
-        return buildMenuTree(repository.findAll(MenuSpecification.toSpec(null, SecurityUtils.getCurrentUsername(),pocketId)));
+        return buildMenuTree(repository.findAll(MenuSpecification.toSpec(null, SecurityUtils.getCurrentUsername(),pocketId,null)));
     }
 
     /**
@@ -48,8 +55,16 @@ public class MenuApplicationService extends AbstractModePermissionService<Menu, 
      *
      * @param id
      */
+    @Transactional(rollbackFor = Exception.class)
     public void deleteById(String id) {
-        repository.deleteById(id);
+        List<Menu> selfAndAllChild = new ArrayList<>();
+        selfAndAllChild.add(repository.findById(id).get());
+        findChild(selfAndAllChild,selfAndAllChild);
+        List<Menu> entryList = selfAndAllChild.stream().filter(menu -> Menu.MenuType.ENTRY.equals(menu.getType())).collect(Collectors.toList());
+        entryList.forEach(menu -> {
+            entryRepository.deleteById(menu.getId());
+        });
+        repository.deleteAll(selfAndAllChild);
     }
 
     /**
@@ -64,6 +79,17 @@ public class MenuApplicationService extends AbstractModePermissionService<Menu, 
         return parentIds;
     }
 
+    private void findChild(List<Menu> all, List<Menu> search){
+        all.addAll(search);
+        search.stream().filter(menu -> menu.getType().equals(Menu.MenuType.FOLDER)).forEach(menu -> {
+            findChild(all,findByParentId(menu.getId()));
+        });
+    }
+
+    private List<Menu> findByParentId(String parentId){
+        return repository.findAll(MenuSpecification.toSpec(null,null,null,parentId));
+    }
+
     private void listParentsId(List<String> ids, String id) {
         Optional<Menu> menuOptional = repository.findById(id);
         menuOptional.ifPresent(menu -> {
@@ -75,7 +101,7 @@ public class MenuApplicationService extends AbstractModePermissionService<Menu, 
     }
 
     private Set<MenuTree> listFolderTreeByCurrentUsername(String pocketId) {
-        return buildMenuTree(repository.findAll(MenuSpecification.toSpec(Menu.MenuType.FOLDER, SecurityUtils.getCurrentUsername(), pocketId)));
+        return buildMenuTree(repository.findAll(MenuSpecification.toSpec(Menu.MenuType.FOLDER, SecurityUtils.getCurrentUsername(), pocketId,null)));
     }
 
     private void flat(Set<MenuTree> trees, List<FolderFlat> list, Integer level) {

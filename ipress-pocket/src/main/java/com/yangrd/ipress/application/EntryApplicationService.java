@@ -22,6 +22,9 @@ public class EntryApplicationService extends AbstractModePermissionService<Entry
     @Autowired
     private MenuApplicationService menuApplicationService;
 
+    @Autowired
+    private MenuRepository menuRepository;
+
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -54,6 +57,6 @@ public class EntryApplicationService extends AbstractModePermissionService<Entry
     @Transactional(rollbackFor = Exception.class)
     public void deleteById(String id){
         repository.deleteById(id);
-        menuApplicationService.deleteById(id);
+        menuRepository.deleteById(id);
     }
 }
