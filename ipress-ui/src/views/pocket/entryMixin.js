@@ -1,11 +1,11 @@
 import {saveEntry, updateEntry} from '../../api/pocketApi'
 
 export default {
-    data () {
+    data() {
         return {
             showPageDrawer: false,
-            entryId:undefined,
-            entryItem:{
+            entryId: undefined,
+            entryItem: {
                 "parentMenuId": "",
                 "title": "",
                 "mdContent": "",
@@ -13,26 +13,27 @@ export default {
         }
     },
     methods: {
-        editEntry(id, item){
+        editEntry(id, item) {
             this.entryId = id
-            this.entryItem=Object.assign({
-                name:'',
-                parentId:undefined,
-                mdContent:'',
-                sort:0
-            },item)
-            this.showPageDrawer=true
+            this.entryItem = Object.assign({
+                name: '',
+                parentId: undefined,
+                mdContent: '',
+                sort: 0,
+                pocketId: this.id
+            }, item)
+            this.showPageDrawer = true
         },
-        submitEntry(){
-            if(this.entryId){
-                updateEntry(this.entryId,this.entryItem).then(()=>{
-                    this.initData()
-                    this.showPageDrawer=false
+        submitEntry() {
+            if (this.entryId) {
+                updateEntry(this.entryId, this.entryItem).then(() => {
+                    this.loadAllData()
+                    this.showPageDrawer = false
                 })
-            }else{
-                saveEntry(this.entryItem).then(()=>{
-                    this.initData()
-                    this.showPageDrawer=false
+            } else {
+                saveEntry(this.entryItem).then(() => {
+                    this.loadAllData()
+                    this.showPageDrawer = false
                 })
             }
         }

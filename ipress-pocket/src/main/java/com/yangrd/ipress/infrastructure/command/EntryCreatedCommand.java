@@ -27,4 +27,6 @@ public class EntryCreatedCommand {
     private String mdContent;
 
     private String parentMenuId;
+
+    private String pocketId;
 }

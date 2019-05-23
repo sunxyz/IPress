@@ -27,13 +27,13 @@ public class EntryController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void create(@RequestBody EntryCreatedCommand command) {
-        applicationService.create(command);
+        applicationService.save(command);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@PathVariable String id, @RequestBody EntryCreatedCommand command) {
-        applicationService.update(id, command);
+        applicationService.updateById(id, command);
     }
 
     @GetMapping("/{id}")
@@ -43,7 +43,7 @@ public class EntryController {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable String id){
-        applicationService.delete(id);
+        applicationService.deleteById(id);
     }
 
 }

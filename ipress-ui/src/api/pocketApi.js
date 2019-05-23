@@ -8,6 +8,9 @@ export function listMenuTree(params = {}) {
     return axios.get(API + '/tree', {params});
 }
 
+export function listParentId(id, params = {}) {
+    return axios.get(API + "/" + id + '/parents', {params});
+}
 
 export function listFolderFlat(params = {}) {
     return axios.get(API + '/folder', {params});

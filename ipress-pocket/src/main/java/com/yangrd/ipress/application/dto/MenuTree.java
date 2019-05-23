@@ -1,12 +1,10 @@
 package com.yangrd.ipress.application.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
@@ -37,7 +35,7 @@ public class MenuTree implements Comparable<MenuTree>{
     private String parentId;
 
     @JsonIgnore
-    private Date createdTime;
+    private LocalDateTime createdTime;
 
 
     public Set<MenuTree> getChildren() {

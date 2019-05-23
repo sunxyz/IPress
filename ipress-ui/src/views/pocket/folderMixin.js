@@ -57,7 +57,7 @@ export default {
     },
     methods: {
         loadFolderData(){
-            listFolderFlat().then(d=>{
+            listFolderFlat({pocketId: this.id}).then(d=>{
                 this.folderData = d.data
             })
         },
@@ -66,7 +66,8 @@ export default {
             this.folderItem=Object.assign({
                 name:'',
                 parentId:undefined,
-                sort:0
+                sort:0,
+                pocketId: this.id
             },item)
             this.showFolderDrawer2=true
         },
@@ -79,11 +80,13 @@ export default {
             if(this.folderId){
                 updateFolder(this.folderId,this.folderItem).then(()=>{
                     this.loadFolderData()
+                    this.loadMenuTree()
                     this.showFolderDrawer2=false
                 })
             }else{
                 saveFolder(this.folderItem).then(()=>{
                     this.loadFolderData()
+                    this.loadMenuTree()
                     this.showFolderDrawer2=false
                 })
             }

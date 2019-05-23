@@ -3,6 +3,7 @@ package com.yangrd.ipress.application;
 import com.yangrd.ipress.domain.entry.Entry;
 import com.yangrd.ipress.domain.entry.EntryFactory;
 import com.yangrd.ipress.domain.entry.EntryRepository;
+import com.yangrd.ipress.domain.menu.MenuRepository;
 import com.yangrd.ipress.infrastructure.command.EntryCreatedCommand;
 import com.yangrd.ipress.infrastructure.command.MenuCreatedCommand;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,41 +17,43 @@ import org.springframework.transaction.annotation.Transactional;
  * @date 2019/05/13
  */
 @Service
-public class EntryApplicationService extends AbstractPocketApplicationService<Entry, EntryCreatedCommand, EntryFactory, EntryRepository> {
+public class EntryApplicationService extends AbstractModePermissionService<Entry, EntryCreatedCommand, EntryFactory, EntryRepository> {
 
     @Autowired
     private MenuApplicationService menuApplicationService;
 
+
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Entry create(EntryCreatedCommand command) {
-        Entry entry = super.create(command);
+    public Entry save(EntryCreatedCommand command) {
+        Entry entry = super.save(command);
         MenuCreatedCommand menuCommand = new MenuCreatedCommand()
                 .setName(entry.getTitle()).
                         setParentId(command.getParentMenuId()).
+                        setPocketId(command.getPocketId()).
                         setSort(0).
                         setType(1).
                         setId(entry.getId());
-        menuApplicationService.create(menuCommand);
+        menuApplicationService.save(menuCommand);
         return entry;
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void update(String id, EntryCreatedCommand command) {
-        super.update(id, command);
+    public void updateById(String id, EntryCreatedCommand command) {
+        super.updateById(id, command);
         MenuCreatedCommand menuCommand = new MenuCreatedCommand()
                 .setName(command.getTitle()).
                         setParentId(command.getParentMenuId()).
                         setSort(0).
                         setType(1).
                         setId(id);
-        menuApplicationService.update(id, menuCommand);
+        menuApplicationService.updateById(id, menuCommand);
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void delete(String id){
+    public void deleteById(String id){
         repository.deleteById(id);
-        menuApplicationService.delete(id);
+        menuApplicationService.deleteById(id);
     }
 }

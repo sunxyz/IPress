@@ -3,6 +3,7 @@ package com.yangrd.ipress.application.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Value;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -25,7 +26,7 @@ public class FolderFlat implements Comparable<FolderFlat> {
     private String parentId;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
-    private Date createdTime;
+    private LocalDateTime createdTime;
 
 
     @Override

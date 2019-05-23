@@ -1,8 +1,11 @@
 package com.yangrd.ipress.domain.entry;
 
+import com.yangrd.ipress.infrastructure.mode.AbstractModeEntity;
 import com.yangrd.ipress.infrastructure.mode.Mode;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -17,19 +20,14 @@ import java.time.LocalDateTime;
  * @author yangrd
  * @date 2019/05/13
  */
-@Data
-@EqualsAndHashCode(of = "id")
+@Getter
+@Setter
 @Accessors(chain = true)
 
 @Entity
 @Table(name = "p_entry")
 @EntityListeners(AuditingEntityListener.class)
-public class Entry {
-
-    @Id
-    @Column(length = 100)
-    private String id;
-
+public class Entry extends AbstractModeEntity<Entry> {
 
     /**
      * 文件夹
@@ -53,14 +51,7 @@ public class Entry {
     @Lob
     private String mdContent;
 
-    /**
-     * 权限模型　chmod linux
-     */
-    private Mode mode;
 
-    @CreatedDate
-    private LocalDateTime createdTime;
 
-    @LastModifiedDate
-    private LocalDateTime lastModifiedTime;
+
 }

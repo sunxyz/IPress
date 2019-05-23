@@ -18,8 +18,6 @@
                             </Tooltip>
                         </li>
                     </ul>
-
-
                 </div>
             </div>
             <div class="side-menu-wrapper">
@@ -72,7 +70,12 @@
 
             </div>
 
-            <Menu class="side-menu-wrapper" width="auto" :class="menuitemClasses"  @on-select="selectMenu">
+            <Menu
+                    class="side-menu-wrapper"
+                    width="auto"
+                    :class="menuitemClasses"
+                    :open-names="menuOpenedIds"
+                    :active-name="menuActiveId" @on-select="selectMenu"　ref="menu">
                 <MainSideSubmenu :menus="menus"></MainSideSubmenu>
             </Menu>
         </template>
@@ -96,6 +99,12 @@
             collapsed: {
                 type: Boolean,
                 default: false
+            },
+            menuActiveId:{
+                type:String
+            },
+            menuOpenedIds:{
+                type:Array
             }
         },
         computed: {
@@ -119,6 +128,13 @@
                 this.$emit('on-click-entry')
             }
 
+        },
+        watch:{
+            menuOpenedIds(){
+                this.$nextTick(()=>{
+                    this.$refs.menu.updateOpened()
+                })
+            }
         }
     }
 </script>

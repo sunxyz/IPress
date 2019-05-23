@@ -6,12 +6,9 @@ import com.yangrd.ipress.application.dto.MenuTree;
 import com.yangrd.ipress.infrastructure.IDGenerator;
 import com.yangrd.ipress.infrastructure.command.MenuCreatedCommand;
 import lombok.AllArgsConstructor;
-import org.hibernate.mapping.IdGenerator;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.*;
 import java.util.List;
 import java.util.Set;
 
@@ -34,27 +31,32 @@ public class MenuController {
     public void create(@RequestBody MenuCreatedCommand command) {
         command.setId(IDGenerator.genId());
         command.setType(0);
-        applicationService.create(command);
+        applicationService.save(command);
     }
 
     @PutMapping("/{id}")
     public void update(@PathVariable String id, @RequestBody MenuCreatedCommand command) {
-        applicationService.update(id, command);
+        applicationService.updateById(id, command);
     }
 
     @GetMapping("/tree")
-    public Set<MenuTree> listTree() {
-        return applicationService.listTree();
+    public Set<MenuTree> listTree(String pocketId) {
+        return applicationService.getCurrentUserMenuTrees(pocketId);
     }
 
     @GetMapping("/folder")
-    public List<FolderFlat> listFolderFlat() {
-        return applicationService.listFolderFlat();
+    public List<FolderFlat> listFolderFlat(String pocketId) {
+        return applicationService.listFolderFlatByCurrentUsername(pocketId);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable String id){
-        applicationService.delete(id);
+        applicationService.deleteById(id);
+    }
+
+    @GetMapping("/{id}/parents")
+    public List<String> listParentsId(@PathVariable String id){
+        return applicationService.listParentsId(id);
     }
 
 

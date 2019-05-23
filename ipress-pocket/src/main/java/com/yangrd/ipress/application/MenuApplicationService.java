@@ -6,11 +6,10 @@ import com.yangrd.ipress.domain.menu.Menu;
 import com.yangrd.ipress.domain.menu.MenuFactory;
 import com.yangrd.ipress.domain.menu.MenuRepository;
 import com.yangrd.ipress.domain.menu.MenuSpecification;
-import com.yangrd.ipress.infrastructure.IDGenerator;
+import com.yangrd.ipress.infrastructure.SecurityUtils;
 import com.yangrd.ipress.infrastructure.command.MenuCreatedCommand;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.function.Function;
@@ -23,31 +22,60 @@ import java.util.stream.Collectors;
  * @date 2019/05/13
  */
 @Service
-public class MenuApplicationService extends AbstractPocketApplicationService<Menu, MenuCreatedCommand, MenuFactory, MenuRepository> {
-
-    @Override
-    public Menu create(MenuCreatedCommand command) {
-        return super.create(command);
+public class MenuApplicationService extends AbstractModePermissionService<Menu, MenuCreatedCommand, MenuFactory, MenuRepository> {
+    /**
+     * 获取当前用户菜单树
+     *
+     * @return
+     */
+    public Set<MenuTree> getCurrentUserMenuTrees(String pocketId) {
+        return buildMenuTree(repository.findAll(MenuSpecification.toSpec(null, SecurityUtils.getCurrentUsername(),pocketId)));
     }
 
-    public Set<MenuTree> listTree() {
-        return buildMenuTree(repository.findAll());
-    }
-
-
-    public List<FolderFlat> listFolderFlat() {
+    /**
+     * 获取当前用户展平后的文件夹
+     *
+     * @return
+     */
+    public List<FolderFlat> listFolderFlatByCurrentUsername(String pocketId) {
         List<FolderFlat> list = new ArrayList<>();
-        flat(listFolderTree(), list, 0);
+        flat(listFolderTreeByCurrentUsername(pocketId), list, 0);
         return list;
     }
 
-    @Transactional(rollbackFor = Exception.class)
-    public void delete(String id){
+    /**
+     * 删除
+     *
+     * @param id
+     */
+    public void deleteById(String id) {
         repository.deleteById(id);
     }
 
-    private Set<MenuTree> listFolderTree() {
-        return buildMenuTree(repository.findAll(MenuSpecification.toSpec(Menu.MenuType.FOLDER)));
+    /**
+     * 获取所有父元素的id
+     *
+     * @param id
+     * @return
+     */
+    public List<String> listParentsId(String id) {
+        List<String> parentIds = new ArrayList<>();
+        listParentsId(parentIds, id);
+        return parentIds;
+    }
+
+    private void listParentsId(List<String> ids, String id) {
+        Optional<Menu> menuOptional = repository.findById(id);
+        menuOptional.ifPresent(menu -> {
+            if (menu.getParentId() != null) {
+                ids.add(menu.getParentId());
+                listParentsId(ids, menu.getParentId());
+            }
+        });
+    }
+
+    private Set<MenuTree> listFolderTreeByCurrentUsername(String pocketId) {
+        return buildMenuTree(repository.findAll(MenuSpecification.toSpec(Menu.MenuType.FOLDER, SecurityUtils.getCurrentUsername(), pocketId)));
     }
 
     private void flat(Set<MenuTree> trees, List<FolderFlat> list, Integer level) {
@@ -71,7 +99,7 @@ public class MenuApplicationService extends AbstractPocketApplicationService<Men
 
 
     private Set<MenuTree> buildMenuTree(List<Menu> menus) {
-        Set<MenuTree> menuTrees = mapSet(menus);
+        Set<MenuTree> menuTrees = conversion2Set(menus);
         Map<String, MenuTree> menuTreeMap = menuTrees.stream().collect(Collectors.toMap(MenuTree::getId, Function.identity()));
         menuTrees.forEach(menuTree -> {
             if (menuTree.presentParent()) {
@@ -81,10 +109,11 @@ public class MenuApplicationService extends AbstractPocketApplicationService<Men
         return new TreeSet<>(menuTrees.stream().filter(MenuTree::isTopMenu).collect(Collectors.toSet()));
     }
 
-    private Set<MenuTree> mapSet(List<Menu> menus) {
+    private Set<MenuTree> conversion2Set(List<Menu> menus) {
         return new TreeSet<>(menus.stream().map(menu -> {
             MenuTree menuTree = new MenuTree();
             menuTree.setType(menu.getType().ordinal());
+            menuTree.setCreatedTime(menu.getCreatedTime());
             BeanUtils.copyProperties(menu, menuTree);
             return menuTree;
         }).collect(Collectors.toSet()));

@@ -1,6 +1,7 @@
 package com.yangrd.ipress.domain.pocket;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 /**
  * PocketRepository
@@ -8,5 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author yangrd
  * @date 2019/05/13
  */
-public interface PocketRepository extends JpaRepository<Pocket, String> {
+public interface PocketRepository extends JpaRepository<Pocket, String>, JpaSpecificationExecutor<Pocket> {
 }

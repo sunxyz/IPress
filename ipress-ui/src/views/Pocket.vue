@@ -1,6 +1,7 @@
 <template>
     <div style="height: 100%">
-        <Main :menus="menus"　 @on-click-folder="clickFolder" @on-click-entry="clickEntry"　@on-select="onSelect">
+        <Main :menus="menus" 　 @on-click-folder="clickFolder" @on-click-entry="clickEntry" :menuActiveId="menuActiveId"
+              :menuOpenedIds="menuOpenedIds" 　@on-select="onSelect">
             <div style="max-width: 900px;margin:0 auto">
                 <h1>{{entry.title}}</h1>
                 <div style="border-bottom: 1px solid #eee ;width: 100%;height: 30px"></div>
@@ -47,22 +48,23 @@
                 @on-close="showPageDrawer=false"
                 :value="showPageDrawer"
                 width="50%">
-            <span style="margin-right: 10px">标题</span> <Input placeholder="标题"　v-model="entryItem.title" style="width: 200px"/>
+            <span style="margin-right: 10px">标题</span> <Input placeholder="标题" 　v-model="entryItem.title"
+                                                              style="width: 200px"/>
             <span style="margin-right: 10px;margin-left: 20px">目录</span>
             <Select v-model="entryItem.parentMenuId" style="width:200px">
                 <Option v-for="item in folderData" :value="item.id" :key="item.id">{{ item.levelName }}</Option>
             </Select>
             <br> <br><br>
             <!--            <vue-simple-markdown :source="value"></vue-simple-markdown>-->
-<!--            <mavon-editor v-model="entryItem.mdContent"/>-->
-                        <markdown-editor v-model="entryItem.mdContent" ref="markdownEditor"></markdown-editor>
+            <!--            <mavon-editor v-model="entryItem.mdContent"/>-->
+            <markdown-editor v-model="entryItem.mdContent" ref="markdownEditor"></markdown-editor>
             <div class="demo-drawer-footer">
                 <Button style="margin-right: 8px" 　@click="showPageDrawer=false">取消</Button>
                 <Button type="primary" @click="submitEntry">保存</Button>
             </div>
         </Drawer>
 
-        <div  class="author-ctl" v-show="entryId">
+        <div class="author-ctl" v-show="entryId">
             <Tooltip content="编辑" placement="right">
                 <Icon type="ios-create-outline" size="30" @click="edit(entryId)"/>
             </Tooltip>
@@ -71,10 +73,10 @@
                 <Poptip placement="left"
                         trigger="hover"
                 >
-                    <Icon type="ios-trash-outline"  size="30"/>
+                    <Icon type="ios-trash-outline" size="30"/>
 
                     <div slot="content">
-                       确认删除?
+                        确认删除?
                         <br><br>
 
                         <Button type="error" size="small" @click="deleteEntry(entryId)">确认</Button>
@@ -88,83 +90,104 @@
 </template>
 
 <script>
-    import {listMenuTree} from '../api/pocketApi'
+    import {listMenuTree, listParentId} from '../api/pocketApi'
     import folderMixin from './pocket/folderMixin'
     import entryMixin from './pocket/entryMixin'
     import Main from '../components/layout'
-    import {getEntry　, deleteEntry} from '../api/pocketApi'
+    import {getEntry, deleteEntry} from '../api/pocketApi'
+
     export default {
-        name: "PocketMain",
-        mixins:[folderMixin,entryMixin],
+        name: "Pocket",
+        mixins: [folderMixin, entryMixin],
         props: {
             id: {
                 type: String
             }
         },
-        data(){
-            return{
-                menus:[],
-                entry:{
-                    title:'',
-                    mdContent:''
-                }
+        data() {
+            return {
+                menus: [],
+                entry: {
+                    title: '',
+                    mdContent: ''
+                },
+                menuActiveId: "20190520182929a64e26ca",
+                menuOpenedIds: [],
             }
         },
-        components:{
+        components: {
             Main
         },
-        methods:{
-            clickFolder(){
-                this.showFolderDrawer=true
+        methods: {
+            clickFolder() {
+                this.showFolderDrawer = true
             },
-            clickEntry(){
+            clickEntry() {
                 this.addEntry()
             },
-            onSelect(id){
-                this.$router.push(Object.assign({},this.$route,{query:{p:id}}))
+            onSelect(id) {
+                this.$router.push(Object.assign({}, this.$route, {query: {p: id}}))
             },
-            loadMenuTree(){
-                listMenuTree({id: this.id}).then(d => {
+            loadMenuTree() {
+                listMenuTree({pocketId: this.id}).then(d => {
                     this.menus = d.data
                 })
             },
-            loadEntry(){
-                if(this.$route.query.p){
+            loadEntry() {
+                if (this.$route.query.p) {
                     this.entryId = this.$route.query.p
-                    getEntry(this.entryId).then(d=>{
+                    getEntry(this.entryId).then(d => {
                         this.entry = d.data
                     })
                 }
             },
-            addEntry(){
+            addEntry() {
                 this.loadFolderData()
                 this.editEntry()
             },
-            edit(id){
+            edit(id) {
                 this.loadFolderData()
-                getEntry(id).then(d=>{
-                    this.editEntry(id,d.data)
+                getEntry(id).then(d => {
+                    this.editEntry(id, d.data)
                 })
             },
-            deleteEntry(id){
-                deleteEntry(id).then(()=>{
+            deleteEntry(id) {
+                deleteEntry(id).then(() => {
                     this.$Message.success('删除成功')
                     this.initData()
-                }).catch(()=>{
+                }).catch(() => {
                     this.$Message.error('删除失败')
                 })
             },
-            initData(){
+            loadAllData() {
                 this.loadMenuTree()
                 this.loadEntry()
             }
         },
-        mounted(){
-            this.initData()
+        mounted() {
+            this.loadEntry()
+            if (this.$route.query.p) {
+                listMenuTree({pocketId: this.id}).then(d => {
+                    this.menus = d.data
+                    this.$nextTick(() => {
+                        listParentId(this.$route.query.p).then(d => {
+                            this.menuOpenedIds = d.data
+                        })
+                        this.menuActiveId = this.$route.query.p
+                    })
+                })
+
+            } else {
+                listMenuTree({pocketId: this.id}).then(d => {
+                    this.menus = d.data
+                })
+            }
+
+
         },
-        watch:{
-            $route(){
-               this.initData()
+        watch: {
+            $route() {
+                this.loadAllData()
             }
         }
     }

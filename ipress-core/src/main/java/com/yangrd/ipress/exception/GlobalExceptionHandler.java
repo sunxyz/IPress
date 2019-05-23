@@ -14,7 +14,7 @@ import java.io.IOException;
  * @author yangrd
  * @date 2019/04/24
  */
-@RestControllerAdvice
+//@RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(CustomException.class)
