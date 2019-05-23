@@ -29,4 +29,6 @@ public class EntryCreatedCommand {
     private String parentMenuId;
 
     private String pocketId;
+
+    private Integer sort;
 }
