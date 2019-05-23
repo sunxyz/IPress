@@ -1,4 +1,4 @@
-import {listFolderFlat, saveFolder, updateFolder ,deleteEntry} from '../../api/pocketApi'
+import {listFolderFlat, saveFolder, updateFolder ,deleteFolder} from '../../api/pocketApi'
 
 export default {
     data () {
@@ -40,6 +40,17 @@ export default {
                                 props: {
                                     type: 'text',
                                     size: 'small'
+                                },
+                                on:{
+                                    click:()=>{
+                                        this.$Modal.confirm({
+                                            title: '确认删除目录吗？',
+                                            content: '确认删除目录吗？此操作会把该目录下的所有页面一并删除，请谨慎操作。',
+                                            onOk: () => {
+                                                this.deleteFolder(params.row.id);
+                                            }
+                                        });
+                                    }
                                 }
                             }, '删除')
                         ]);
@@ -72,8 +83,10 @@ export default {
             this.showFolderDrawer2=true
         },
         deleteFolder(id){
-            deleteEntry(id).then(()=>{
+            deleteFolder(id).then(()=>{
                 this.loadFolderData()
+                this.loadMenuTree()
+                this.loadEntry()
             })
         },
         submitFolder(){

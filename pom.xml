@@ -18,6 +18,7 @@
     <properties>
         <java.version>1.8</java.version>
         <jjwt.version>0.7.0</jjwt.version>
+        <jpa-spec.version>3.2.4</jpa-spec.version>
     </properties>
 
     <modules>
@@ -35,18 +36,16 @@
                 <artifactId>jjwt</artifactId>
                 <version>${jjwt.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.github.wenhao</groupId>
+                <artifactId>jpa-spec</artifactId>
+                <version>${jpa-spec.version}</version>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>
 
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+
 
 </project>

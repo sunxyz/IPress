@@ -36,7 +36,7 @@ public class MenuApplicationService extends AbstractModePermissionService<Menu, 
      * @return
      */
     public Set<MenuTree> getCurrentUserMenuTrees(String pocketId) {
-        return buildMenuTree(repository.findAll(MenuSpecification.toSpec(null, SecurityUtils.getCurrentUsername(),pocketId,null)));
+        return buildMenuTree(repository.findAll(MenuSpecification.toSpec(null, SecurityUtils.getCurrentUsername(), pocketId, null)));
     }
 
     /**
@@ -58,8 +58,7 @@ public class MenuApplicationService extends AbstractModePermissionService<Menu, 
     @Transactional(rollbackFor = Exception.class)
     public void deleteById(String id) {
         List<Menu> selfAndAllChild = new ArrayList<>();
-        selfAndAllChild.add(repository.findById(id).get());
-        findChild(selfAndAllChild,selfAndAllChild);
+        findChild(selfAndAllChild, Collections.singletonList(repository.findById(id).get()));
         List<Menu> entryList = selfAndAllChild.stream().filter(menu -> Menu.MenuType.ENTRY.equals(menu.getType())).collect(Collectors.toList());
         entryList.forEach(menu -> {
             entryRepository.deleteById(menu.getId());
@@ -79,15 +78,15 @@ public class MenuApplicationService extends AbstractModePermissionService<Menu, 
         return parentIds;
     }
 
-    private void findChild(List<Menu> all, List<Menu> search){
+    private void findChild(List<Menu> all, List<Menu> search) {
         all.addAll(search);
-        search.stream().filter(menu -> menu.getType().equals(Menu.MenuType.FOLDER)).forEach(menu -> {
-            findChild(all,findByParentId(menu.getId()));
+        search.stream().filter(menu -> Menu.MenuType.FOLDER.equals(menu.getType())).forEach(menu -> {
+            findChild(all, findByParentId(menu.getId()));
         });
     }
 
-    private List<Menu> findByParentId(String parentId){
-        return repository.findAll(MenuSpecification.toSpec(null,null,null,parentId));
+    private List<Menu> findByParentId(String parentId) {
+        return repository.findAll(MenuSpecification.toSpec(null, null, null, parentId));
     }
 
     private void listParentsId(List<String> ids, String id) {
@@ -101,7 +100,7 @@ public class MenuApplicationService extends AbstractModePermissionService<Menu, 
     }
 
     private Set<MenuTree> listFolderTreeByCurrentUsername(String pocketId) {
-        return buildMenuTree(repository.findAll(MenuSpecification.toSpec(Menu.MenuType.FOLDER, SecurityUtils.getCurrentUsername(), pocketId,null)));
+        return buildMenuTree(repository.findAll(MenuSpecification.toSpec(Menu.MenuType.FOLDER, SecurityUtils.getCurrentUsername(), pocketId, null)));
     }
 
     private void flat(Set<MenuTree> trees, List<FolderFlat> list, Integer level) {

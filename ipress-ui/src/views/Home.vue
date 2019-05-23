@@ -10,7 +10,7 @@
                   :key="pocket.id"　
                   class="pocket-item"
                   @click="$router.push({name:'pocket',params:{id:pocket.id}})"
-                  :style="{background: 'url('+pocket.bg+')'}"
+                  :style="{background: 'url('+pocket.bg+') no-repeat center center'}"
                   >
             <div class="setting">
               <Icon type="ios-cog-outline" size="20" @click.stop="openModal(pocket.id, pocket)"/>
