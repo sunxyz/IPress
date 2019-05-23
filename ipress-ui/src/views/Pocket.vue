@@ -54,7 +54,7 @@
             <Select v-model="entryItem.parentMenuId" style="width:200px">
                 <Option v-for="item in folderData" :value="item.id" :key="item.id">{{ item.levelName }}</Option>
             </Select>
-            <span style="margin-right: 10px;margin-left: 20px">序号</span><InputNumber v-model="folderItem.sort" placeholder="请输入序号..."/>
+            <span style="margin-right: 10px;margin-left: 20px">序号</span><InputNumber v-model="entryItem.sort" placeholder="请输入序号..."/>
             <br> <br><br>
             <!--            <vue-simple-markdown :source="value"></vue-simple-markdown>-->
             <!--            <mavon-editor v-model="entryItem.mdContent"/>-->
