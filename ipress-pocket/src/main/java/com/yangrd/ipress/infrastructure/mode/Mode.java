@@ -36,7 +36,6 @@ public class Mode {
         return hasOperation(x, Operation.READ);
     }
 
-
     public boolean hasWrite(Integer x) {
         return hasOperation(x, Operation.WRITE);
     }

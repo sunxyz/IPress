@@ -9,16 +9,16 @@ package com.yangrd.ipress.infrastructure.mode;
 public enum Operation {
 
     /**
-     * 执行
+     * 读
      */
-    EXCUTE,
+    READ,
     /**
      * 写
      */
     WRITE,
     /**
-     * 读
+     * 执行
      */
-    READ
+    EXCUTE
 
 }
