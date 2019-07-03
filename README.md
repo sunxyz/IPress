@@ -4,9 +4,9 @@
 
 > Vue vueRouter Spring Boot
  
-**demo**
+**online demo**
  
-[ipress](https://suxyz.gitee.com)
+[ipress](https://sunxyz.gitee.io)
 
 
 **已完成**
