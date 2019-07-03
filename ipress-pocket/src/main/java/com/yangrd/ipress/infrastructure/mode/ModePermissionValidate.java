@@ -11,20 +11,6 @@ import com.yangrd.ipress.infrastructure.SecurityUtils;
  */
 public class ModePermissionValidate {
 
-    public enum Operation {
-        /**
-         * 读
-         */
-        READ,
-        /**
-         * 写
-         */
-        WRITE,
-        /**
-         * 执行
-         */
-        EXCUTE
-    }
 
     public static void validate(Mode mode, Operation operation) {
         if (mode.getUserName().equals(SecurityUtils.getCurrentUsername())) {

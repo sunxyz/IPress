@@ -32,31 +32,37 @@ public class Mode {
     @Column(name = "mod_other")
     private Integer other;
 
-    public boolean hasRead(Integer x){
-        if(Objects.nonNull(x)){
-            if(x>3){
+    public boolean hasRead(Integer x) {
+        return hasOperation(x, Operation.READ);
+    }
+
+
+    public boolean hasWrite(Integer x) {
+        return hasOperation(x, Operation.WRITE);
+    }
+
+    public boolean hasExcute(Integer x) {
+        return hasOperation(x, Operation.EXCUTE);
+    }
+
+    private boolean hasOperation(Integer x, Operation operation) {
+        if (Objects.nonNull(x)) {
+            if (toBinaryBooleanArray(x)[operation.ordinal()]) {
                 return true;
             }
         }
         return false;
     }
 
-    public boolean hasWrite(Integer x){
-        if(Objects.nonNull(x)){
-            if(x>1){
-                return true;
+    private boolean[] toBinaryBooleanArray(int x) {
+        boolean[] m = {false, false, false};
+        String str = String.format("%3s", Integer.toBinaryString(5)).replace(" ", "0");
+        for (int i = 0; i < 3; i++) {
+            if (str.charAt(i) == '1') {
+                m[i] = true;
             }
         }
-        return false;
-    }
-
-    public boolean hasExcute(Integer x){
-        if(Objects.nonNull(x)){
-            if(x>0){
-                return true;
-            }
-        }
-        return false;
+        return m;
     }
 
 }
