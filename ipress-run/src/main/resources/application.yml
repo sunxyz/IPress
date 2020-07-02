@@ -5,9 +5,9 @@ spring:
     version: @project.version@
 
   datasource:
-    url: jdbc:mysql://192.168.2.54:23306/i-press?characterEncoding=utf-8&useSSL=false&autoReconnect=false&rewriteBatchedStatements=true&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://192.168.8.233:23306/i-press?characterEncoding=utf-8&useSSL=false&autoReconnect=false&rewriteBatchedStatements=true&serverTimezone=Asia/Shanghai
     username: root
-    password: 123456
+    password: test@123456.
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
@@ -25,10 +25,19 @@ spring:
       ddl-auto: update
     show-sql: true
 
+#  profiles:
+#    active: rel
 server:
   port: 8086
   servlet:
     context-path: /api
+  #SSL https证书配置
+#  ssl:
+#    key-store: classpath:keystore.p12
+#    key-store-password: sxydhkbl
+#    #行业标准PKCS12
+#    key-store-type: PKCS12
+#    key-alias: spring-boot
   #开启http2
   http2:
     enabled: true

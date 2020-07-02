@@ -14,8 +14,7 @@
     "mavon-editor": "^2.7.4",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",
-    "vue-simple-markdown": "^1.0.9",
-    "vue-simplemde": "^0.5.1",
+    "vue-simple-markdown": "^1.1.4",
     "vuex": "^3.0.1"
   },
   "devDependencies": {

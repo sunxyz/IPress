@@ -1,3 +1,4 @@
 import axios from 'axios'
-axios.defaults.baseURL='https://192.168.2.25:8086'
+
+axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? 'http://ipress-api.jinyijjia1688.com' : 'http://localhost:8086'
 export default axios

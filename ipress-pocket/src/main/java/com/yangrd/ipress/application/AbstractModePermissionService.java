@@ -4,6 +4,7 @@ import com.yangrd.ipress.domain.IPocketFactory;
 import com.yangrd.ipress.infrastructure.SecurityUtils;
 import com.yangrd.ipress.infrastructure.mode.AbstractModeEntity;
 import com.yangrd.ipress.infrastructure.mode.ModePermissionValidate;
+import com.yangrd.ipress.infrastructure.mode.Operation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -31,7 +32,7 @@ public abstract class AbstractModePermissionService<T extends AbstractModeEntity
     @Transactional(rollbackFor = Exception.class)
     public T save(C command) {
         T entity = factory.created(command, SecurityUtils.getCurrentUsername());
-        ModePermissionValidate.validate(entity.getMode(), ModePermissionValidate.Operation.WRITE);
+        ModePermissionValidate.validate(entity.getMode(), Operation.WRITE);
         return repository.save(entity);
     }
 
@@ -44,7 +45,7 @@ public abstract class AbstractModePermissionService<T extends AbstractModeEntity
     @Transactional(rollbackFor = Exception.class)
     public void updateById(String id, C command) {
         repository.findById(id).ifPresent(entity -> {
-            ModePermissionValidate.validate(entity.getMode(), ModePermissionValidate.Operation.WRITE);
+            ModePermissionValidate.validate(entity.getMode(), Operation.WRITE);
             BeanUtils.copyProperties(command, entity);
         });
     }

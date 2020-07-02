@@ -4,7 +4,6 @@ import router from './router'
 import store from './store'
 import './plugins/iview.js'
 import './plugins/mavon-editor.js'
-import './plugins/simplemde.js'
 import './plugins/vue-simple-markdown.js'
 
 Vue.config.productionTip = false

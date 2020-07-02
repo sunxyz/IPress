@@ -20,8 +20,8 @@ public class IPressRunApplication {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("http://localhost:8080","https://sunxyz.gitee.io")
-                        .allowedMethods("PUT", "DELETE","GET","POST")
+                registry.addMapping("/**").allowedOrigins("http://localhost:8080", "https://sunxyz.gitee.io", "http://sunxyz.gitee.io", "http://ipress.jinyijia1688.com", "http://ipress.3j168.com")
+                        .allowedMethods("PUT", "DELETE", "GET", "POST")
                         .allowCredentials(false).maxAge(3600);
             }
         };

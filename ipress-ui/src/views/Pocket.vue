@@ -56,9 +56,7 @@
             </Select>
             <span style="margin-right: 10px;margin-left: 20px">序号</span><InputNumber v-model="entryItem.sort" placeholder="请输入序号..."/>
             <br> <br><br>
-            <!--            <vue-simple-markdown :source="value"></vue-simple-markdown>-->
-            <!--            <mavon-editor v-model="entryItem.mdContent"/>-->
-            <markdown-editor v-model="entryItem.mdContent" ref="markdownEditor"></markdown-editor>
+                        <mavon-editor v-model="entryItem.mdContent"/>
             <div class="demo-drawer-footer">
                 <Button style="margin-right: 8px" 　@click="showPageDrawer=false">取消</Button>
                 <Button type="primary" @click="submitEntry">保存</Button>
@@ -205,5 +203,10 @@
         text-align: center;
         border-radius: 16px;
         border: 1px solid #f1f1f1;
+    }
+    .demo-drawer-footer{
+        margin-top: 30px;
+        display: flex;
+        justify-content: flex-end;
     }
 </style>
